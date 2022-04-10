@@ -4,7 +4,7 @@
 (This file generated from the board:)
 (.../AutoWatering/watering_board.brd)
 (Current profile is .../pcb-gcode-3_6_0_4/profiles/generic.pp  )
-(This file generated 4/8/22 4:25 PM)
+(This file generated 4/9/22 12:16 PM)
 (Settings from pcb-machine.h)
 (  Tool Size)
 (0.5500 )
@@ -31,10 +31,6 @@
 G21
 (Absolute Coordinates)
 G90
-M05
-G00 Z25.4000 
-G00 X0.0000 Y0.0000 
-M06 T01  ; 0.9000 
 G00 Z2.5400 
 M03
 G04 P3.000000
@@ -43,9 +39,6 @@ G00 X40.6400 Y5.0800
 G01 Z-1.6000 F18.00 
 G01 Z2.540000
 (R2.5400  P1.000000)
-M05
-G00 Z25.4000 
-M06 T02  ; 1.0000 
 G00 Z2.5400 
 M03
 G04 P3.000000
@@ -170,9 +163,6 @@ G01 Z2.540000
 G00 X24.1300 Y30.4800 
 G01 Z-1.600000
 G01 Z2.540000
-M05
-G00 Z25.4000 
-M06 T03  ; 1.0160 
 G00 Z2.5400 
 M03
 G04 P3.000000

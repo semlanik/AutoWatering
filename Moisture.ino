@@ -5,7 +5,7 @@ class WateringStateMachine
         Watering,
         Pause
     };
-    static const short MoistureMin = 33;
+    static const short MoistureMin = 35;
     static const short MoistureMax = 55;
     static const short WateringTimeout = 2000;
     static const short IdleTimeout = 3000;
@@ -103,8 +103,8 @@ public:
 };
 
 const short tick = 500;
-//static WateringStateMachine stateMachine1(A0, 3, 870, 630, tick);
-static WateringStateMachine stateMachine2(A1, 2, 896, 723, tick);
+static WateringStateMachine stateMachine1(A0, 3, 921, 715, tick);
+static WateringStateMachine stateMachine2(A1, 2, 961, 760, tick);
 
 void setup() {
     pinMode(2, OUTPUT);
@@ -116,7 +116,7 @@ void loop() {
     // Make the run of state machines async since we may run into situation with simulatous
     // start of 2 electric motors set LDO into the block and arduino will be out of power.
     delay(tick/2);
-//    stateMachine1.execute();
+    stateMachine1.execute();
     delay(tick/2);
     stateMachine2.execute();
 }
