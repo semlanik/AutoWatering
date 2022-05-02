@@ -174,6 +174,7 @@ void loop() {
     // start of 2 electric motors will set the LDO into the block and arduino will be out of power.
     // Current schematic supports only 0.8A current for motors. Need to improve it to support higher
     // current.
+    delay(1000); // Give sensor the chance to wake up and provide better values.
     stateMachine1.execute();
     delay(500);
     stateMachine2.execute();
