@@ -1,8 +1,7 @@
-//#define SerialDebug(X) Serial.print(X)
-#define SerialDebug(X)
+#define SerialDebug(X) Serial.print(X)
+//#define SerialDebug(X)
 
 
-#include <avr/wdt.h>
 #include <avr/sleep.h>
 
 class WateringStateMachine
@@ -125,51 +124,34 @@ public:
     }
 };
 
-static WateringStateMachine stateMachine1(A0, 3, 921, 715);
-static WateringStateMachine stateMachine2(A1, 2, 961, 760);
+static WateringStateMachine stateMachine1(A0, 2, 876, 680);
+static WateringStateMachine stateMachine2(A1, 3, 945, 808);
 
-ISR(WDT_vect)
+ISR(RTC_PIT_vect)
 {
-    SerialDebug("Wake up\n");
-    wdt_disable();
+    RTC.PITINTFLAGS = RTC_PI_bm;          // Clear interrupt flag by writing '1' (required) 
 }
 
-void enableWatchdog()
+void initRTC(void)
 {
-    WDTCSR = (1<<WDCE) | (1<<WDE);
-    WDTCSR = (1<<WDIE) | (1<<WDP3) | (1<<WDP0); // set WDIE, and 8 second timeout
-    wdt_reset();
+    while (RTC.STATUS > 0);
+    RTC.CLKSEL = RTC_CLKSEL_INT1K_gc;
+    RTC.PITINTCTRL = RTC_PI_bm;
+    RTC.PITCTRLA = RTC_PERIOD_CYC8192_gc | RTC_PITEN_bm;
 }
 
 void setup() {
-//    Serial.begin(115200);
+    Serial.begin(115200);
     pinMode(2, OUTPUT);
     pinMode(3, OUTPUT);
 
-    // clear various "reset" flags
-    MCUSR = 0;
-
-    enableWatchdog();
-
-    set_sleep_mode(SLEEP_MODE_PWR_SAVE);
-}
-
-
-
-void sleepNow()
-{
+    initRTC();
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_enable();
-    cli();
-    MCUCR = (1<<BODS) | (1<<BODSE);
-    MCUCR = (1<<BODS);
-    sei();
-    sleep_mode();
 }
 
 void loop() {
-    enableWatchdog();
-    sleepNow();
-
+//    sleep_cpu();
     // Make the run of state machines async since we may run into situation with simulatous
     // start of 2 electric motors will set the LDO into the block and arduino will be out of power.
     // Current schematic supports only 0.8A current for motors. Need to improve it to support higher
